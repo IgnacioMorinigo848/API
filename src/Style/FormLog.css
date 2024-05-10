@@ -28,6 +28,10 @@
     font-weight: bold;
     text-shadow: 2px 2px 5px rgba(219, 216, 216, 0.5), -2px -2px 5px rgba(48, 47, 47, 0.5);
 }
+
+.botones p a{
+    text-decoration: none;
+}
 @media (min-width: 600px) and (max-width: 1100px) {
     .principal-contenedor-form{
         padding:60px 0px;

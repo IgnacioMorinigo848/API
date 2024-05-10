@@ -13,17 +13,15 @@ const Login = () => {
 
   const validateForm = () => {
     let errors = {};
-    const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/;
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   
     if (!email || !regexEmail.test(email)) {
       errors.email = "Invalid email";
     }
-    if (!password || !regexPassword.test(password)) {
+    if (!password || !password.length === 0) {
       errors.password = (
         <>
           Invalid Password. 
-          <Link to="/Register">Change</Link>
         </>
       );}
     setErrors(errors);
@@ -33,7 +31,7 @@ const Login = () => {
     e.preventDefault();
     //USERS
     try {
-      if (validateForm){
+      if (validateForm()){
         const payload = loginUser({ email, password })
         localStorage.setItem("token", payload.id)
         localStorage.setItem(
@@ -90,13 +88,16 @@ const Login = () => {
               </div>
               
               <div className="botones crear-cuenta">
-                  <p className="crear-cuenta" >¿You do not have an account?<a href="/register">Create an account</a></p>
+                  <p className="crear-cuenta" >¿You don't have an account yet?<a href="/register">Create an account</a></p>
               </div>
 
 
               <button type="submit" className="btn btn-primary">
                 Login
               </button>
+              <div className="botones cambiar-contraseña">
+                  <p className="crear-cuenta" ><a href="/changePassword">¿did you forget your password?</a></p>
+              </div>
             </form>
           </div>
       </div>

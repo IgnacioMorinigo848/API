@@ -22,7 +22,7 @@ const Navbar = () => {
   const handdleLogout = (e) => {
     e.preventDefault();
     localStorage.clear();
-    navigate("/");
+    navigate("/home?media=movie");
   };
 
   useEffect(() => {
