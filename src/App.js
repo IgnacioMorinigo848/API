@@ -9,7 +9,6 @@ import MovieDetails from "./components/MovieDetails";
 import Profile from "./components/Profile";
 import Footer from "./components/Footer";
 import { ChangePassoword } from "./components/changePassword";
-import Category from "./components/Category";
 
 const App = () => {
 
