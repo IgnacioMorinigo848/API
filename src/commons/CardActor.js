@@ -12,7 +12,7 @@ const CardActor = ({ data }) => {
 
     <div className="contenedor-card" key={data.id}>
       <div className="card ">
-        <Link to={`/actores/${data.id}`}>
+        <Link to={`/home?media=person&actorId=${data.id}`}>
           {
             data.profile_path ? <img
               src={`https://image.tmdb.org/t/p/original/${data.profile_path}`}

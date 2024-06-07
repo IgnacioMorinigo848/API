@@ -17,3 +17,17 @@
     box-shadow: 5px 5px 40px rgba(0, 0, 0, 0.5); 
     padding: 5px
 }
+
+.contenedor-home{
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 0px;
+
+}
+.contenedor-film{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}

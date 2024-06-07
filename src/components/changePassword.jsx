@@ -39,7 +39,7 @@ export function ChangePassoword() {
             </>
           );
         }
-        if(!password || password === confirmPassword){
+        if(!password || password != confirmPassword){
             errors.confirmPassword =("Invalid Password")
         }
         setErrors(errors);
