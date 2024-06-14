@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faEye, faEyeSlash, faList, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import filmNotAvaible from "../assets/filmNotAvaible.png";
 
-const Card = ({ data, media }) => {
+const Card = ({ data,media }) => {
   const userNoparse = localStorage.getItem("user");
   const user = JSON.parse(userNoparse);
 
@@ -15,37 +15,33 @@ const Card = ({ data, media }) => {
   const [verDespues, setVer] = useState(false);
 
   useEffect(() => {
-    if (user && data) {
+    if (user) {
       setFavorito(isFavorite(user.id, data.id));
-      setVer(inWatchLater(user.id, data.id));
-      setVistas(inVistas(user.id, data.id));
+      setVer(inWatchLater(user.id, data.id))
+      setVistas(inVistas(user.id, data.id))
     }
-  }, [user, data]); // Actualiza cuando cambia el usuario o los datos
 
-  const toggleFavorite = () => {
+  }, [data.id]);
+  const toggleFavorite = (user) => {
     if (user && data) {
       setFavorito(!favorito);
       favorito ? removeToFavorites(data, user.id) : addFavorites(data, user.id);
     }
   };
 
-  const toggleVerDespues = () => {
+  const toggleVerDespues = (user) => {
     if (user && data) {
       setVer(!verDespues);
       verDespues ? removeToWatchLater(data, user.id) : addToWatchLater(data, user.id);
     }
   };
 
-  const toggleVistas = () => {
+  const toggleVistas = (user) => {
     if (user && data) {
       setVistas(!vistas);
       vistas ? removeToVistas(data, user.id) : addToVistas(data, user.id);
     }
   };
-
-  if (!data) {
-    return null; // O renderizar un componente de carga o mensaje de error
-  }
 
   return (
     <div className="contenedor-card" key={data.id}>
@@ -73,23 +69,23 @@ const Card = ({ data, media }) => {
           <div className="opcion-lista">
             <div className="opcion" onClick={toggleFavorite}>
               {!favorito ? (
-                <FontAwesomeIcon icon={faHeart} style={{ color: "#000000" }} />
+                <FontAwesomeIcon icon={faHeart} style={{ color: "#000000" }} title="add Favorite List" />
               ) : (
-                <FontAwesomeIcon icon={faHeart} style={{ color: '#ef6161' }} />
+                <FontAwesomeIcon icon={faHeart} style={{ color: '#ef6161' }} title= "delete from Favorite List"/>
               )}
             </div>
             <div className="opcion" onClick={toggleVistas}>
               {!vistas ? (
-                <FontAwesomeIcon icon={faEye} style={{ color: "#000000" }} />
+                <FontAwesomeIcon icon={faEye} style={{ color: "#000000" }} title="add View List" />
               ) : (
-                <FontAwesomeIcon icon={faEyeSlash} style={{ color: "#000000" }} />
+                <FontAwesomeIcon icon={faEyeSlash} style={{ color: "#000000" }} title= "delete from View List"/>
               )}
             </div>
             <div className="opcion" onClick={toggleVerDespues}>
               {!verDespues ? (
-                <FontAwesomeIcon icon={faPlusCircle} style={{ color: "#000000" }} />
+                <FontAwesomeIcon icon={faPlusCircle} style={{ color: "#000000" }} title= "add To Watch List"/>
               ) : (
-                <FontAwesomeIcon icon={faList} style={{ color: "#000000" }} />
+                <FontAwesomeIcon icon={faList} style={{ color: "#000000" }} title="delete from To Watch List"/>
               )}
             </div>
           </div>
@@ -97,6 +93,7 @@ const Card = ({ data, media }) => {
       </div>
     </div>
   );
+
 };
 
 export default Card;

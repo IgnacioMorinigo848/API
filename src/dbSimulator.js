@@ -1,5 +1,5 @@
 //provisorio para primer entrega
-let usuarios = [
+ let usuarios = [
     {
         id: 1,
         name: "juan",

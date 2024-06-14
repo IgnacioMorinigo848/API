@@ -1,4 +1,3 @@
-import ActorDetail from "./components/ActorDetail"
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Register from "./components/Register";
@@ -18,7 +17,6 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/actores/:actorId" element={<ActorDetail />} />
         <Route path="/favorita" element={<Lists type="Favorites" title="Favorites"/>} />
         <Route path="/verDespues" element={<Lists type="VerDespues" title="To Watch"/>} />
         <Route path="/vistas" element={<Lists type="Vistas" title="Views"/>} />

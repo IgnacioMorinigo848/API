@@ -6,8 +6,9 @@ import CardActor from "../commons/CardActor";
 import "../Style/Home.css";
 import { useSearchParams } from "react-router-dom";
 import { BuildUrl } from "../BuilderUrl/BuilderUrlParams";
+import { ClipLoader } from 'react-spinners'; 
 
-const Home = ({}) => {
+const Home = () => {
   const [searchParams] = useSearchParams();
   const media = searchParams.get("media") || "movie";
   const categoria = searchParams.get("categoria");
@@ -15,9 +16,11 @@ const Home = ({}) => {
   const actorId = searchParams.get("actorId");
 
   const [populars, setPopulars] = useState([]);
+  const [loading,setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const url = BuildUrl(media, categoria, value, actorId);
         const response = await axios.get(url);
@@ -30,11 +33,19 @@ const Home = ({}) => {
         }
       } catch (error) {
         console.error("Error fetching data:", error);
+      }finally{
+        setLoading(false);  
       }
     };
     fetchData();
   }, [media, categoria, value, actorId]); 
-
+  if (loading) {
+    return (
+      <div className="loader-contenedor-home">
+        <ClipLoader size={50} color={"#123abc"} loading={loading} />
+      </div>
+    );
+  }
   return (
     <>
       <Search media={media} />
