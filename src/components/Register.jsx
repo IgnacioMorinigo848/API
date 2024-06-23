@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUser } from "../dbSimulator"
 import "../Style/FormLog.css"
+import {register} from "../api/register.api"
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -12,18 +13,20 @@ const Register = () => {
   const [errors, setErrors] = useState("");
 
   const validateForm = () => {
-
-    let errors = {}
+    let errors = {};
     const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/;
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!name || name.length < 2) {
       errors.name = "Invalid name";
-    } if (!lastname || lastname.length < 2) {
+    } 
+    if (!lastname || lastname.length < 2) {
       errors.lastname = "Invalid Last name";
-    } if (!email || regexEmail.test(email.value)) {
+    } 
+    if (!email || !regexEmail.test(email)) { // Cambio aquí
       errors.email = "Invalid email";
-    } if (!password || regexPassword.test(password.value)) {
+    } 
+    if (!password || !regexPassword.test(password)) { // Cambio aquí
       errors.password = (
         <>
           Debe tener al menos 8 caracteres.<br />
@@ -36,24 +39,23 @@ const Register = () => {
     }
     setErrors(errors);
     return Object.keys(errors).length === 0;
-
-
-  }
+}
 
   const navigate = useNavigate();
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    try {
+  
       if (validateForm()) {
-        createUser(name, lastname, email, password);
-        navigate('/login')
-      }
-
-    } catch {
-      alert("Usuario no existe")
-    }
+       let response = register(name,lastname,email,password);
+        console.log(response);
+        console.log("Guardo el token en sessionStorage");
+        if(response.status === 200) {
+          sessionStorage.setItem("access-token", response.token);
+          navigate('/login')
+    } 
+  }
   };
 
   return (

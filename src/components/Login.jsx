@@ -4,6 +4,7 @@ import "../Style/FormLog.css"
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from '../dbSimulator'
 import "../Style/FormLog.css"
+import {login} from "../api/login.api"
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -32,18 +33,8 @@ const Login = () => {
     //USERS
     try {
       if (validateForm()){
-        const payload = loginUser({ email, password })
-        localStorage.setItem("token", payload.id)
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            name: payload.name,
-            id: payload.id,
-            email: payload.email,
-            lastname: payload.lastName,
-          }))
-
-          const userNoparse = localStorage.getItem("user");
+        const token = login( email, password );
+          const userNoparse = localStorage.getItem("token");
           const user = JSON.parse(userNoparse);
           console.log(user.lastname)
           navigate("/home")
