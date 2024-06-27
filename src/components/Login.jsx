@@ -1,10 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import "../Style/FormLog.css"
-import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from '../dbSimulator'
+import {useNavigate } from "react-router-dom";
 import "../Style/FormLog.css"
-import {login} from "../api/login.api"
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,15 +27,16 @@ const Login = () => {
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     //USERS
     try {
       if (validateForm()){
-        const token = login( email, password );
-          const userNoparse = localStorage.getItem("token");
-          const user = JSON.parse(userNoparse);
-          console.log(user.lastname)
+        const response = await axios.post('http://localhost:3000/auth/signin', {
+          email,
+          password
+        });
+          localStorage.setItem("token", response.data.token);
           navigate("/home")
       }
      
@@ -87,7 +87,7 @@ const Login = () => {
                 Login
               </button>
               <div className="botones cambiar-contraseña">
-                  <p className="crear-cuenta" ><a href="/changePassword">¿did you forget your password?</a></p>
+                  <p className="crear-cuenta" ><a href="/insertEmail">¿did you forget your password?</a></p>
               </div>
             </form>
           </div>

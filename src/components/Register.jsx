@@ -1,9 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUser } from "../dbSimulator"
 import "../Style/FormLog.css"
-import {register} from "../api/register.api"
+import axios from "axios";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -44,16 +43,20 @@ const Register = () => {
   const navigate = useNavigate();
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
   
       if (validateForm()) {
-       let response = register(name,lastname,email,password);
-        console.log(response);
-        console.log("Guardo el token en sessionStorage");
+        const response = await axios.post('http://localhost:3000/auth/singup', {
+          name,
+          lastname,
+          email,
+          password,
+        });
         if(response.status === 200) {
-          sessionStorage.setItem("access-token", response.token);
-          navigate('/login')
+          console.log(response.data.token)
+          localStorage.setItem("token",response.data.token);
+          navigate('/home')
     } 
   }
   };

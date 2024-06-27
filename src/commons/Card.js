@@ -1,45 +1,62 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { addFavorites, addToWatchLater, isFavorite, addToVistas, removeToWatchLater, removeToVistas, removeToFavorites, inWatchLater, inVistas } from "../dbSimulator";
 import "../Style/Card.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faEye, faEyeSlash, faList, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHeart,
+  faEye,
+  faEyeSlash,
+  faList,
+  faPlusCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import filmNotAvaible from "../assets/filmNotAvaible.png";
+import {
+  addFavorites,
+  isFavorite,
+  removeToFavorites,
+  addWatched,
+  isWatched,
+  removeToWatched,
+  addWatchLater,
+  inWatchLater,
+  removeToWatchLater,
+} from "../API/listHandler";
 
-const Card = ({ data,media }) => {
-  const userNoparse = localStorage.getItem("user");
-  const user = JSON.parse(userNoparse);
-
+const Card = ({ data, media }) => {
+  const token = localStorage.getItem("token");
   const [favorito, setFavorito] = useState(false);
   const [vistas, setVistas] = useState(false);
   const [verDespues, setVer] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      setFavorito(isFavorite(user.id, data.id));
-      setVer(inWatchLater(user.id, data.id))
-      setVistas(inVistas(user.id, data.id))
-    }
+    const fetchList = async () => {
+      setFavorito(await isFavorite(data.id));
+      setVer(await inWatchLater(data.id));
+      setVistas(await isWatched(data.id));
+    };
 
-  }, [data.id]);
-  const toggleFavorite = (user) => {
-    if (user && data) {
+    if (token) {
+      fetchList();
+    }
+  }, [data]);
+  const toggleFavorite = async () => {
+    if (data) {
       setFavorito(!favorito);
-      favorito ? removeToFavorites(data, user.id) : addFavorites(data, user.id);
+      favorito ?   await removeToFavorites(data.id) : await addFavorites(data)
     }
   };
 
-  const toggleVerDespues = (user) => {
-    if (user && data) {
+  const toggleVerDespues = async () => {
+    if (data) {
       setVer(!verDespues);
-      verDespues ? removeToWatchLater(data, user.id) : addToWatchLater(data, user.id);
+      verDespues ? await removeToWatchLater(data.id) : await addWatchLater(data);
     }
   };
 
-  const toggleVistas = (user) => {
-    if (user && data) {
+  const toggleVistas = async () => {
+    if (data) {
       setVistas(!vistas);
-      vistas ? removeToVistas(data, user.id) : addToVistas(data, user.id);
+      vistas ? await removeToWatched(data.id) : await addWatched(data);
     }
   };
 
@@ -62,30 +79,60 @@ const Card = ({ data,media }) => {
           )}
         </Link>
         <div className="card-body">
-          <h5 className="card-title">{media === "tv" ? data.name : data.title}</h5>
-          <p className="card-text">{data.overview ? data.overview.slice(0, 80) + "..." : "No description available."}</p>
+          <h5 className="card-title">
+            {media === "tv" ? data.name : data.title}
+          </h5>
+          <p className="card-text">
+            {data.overview
+              ? data.overview.slice(0, 80) + "..."
+              : "No description available."}
+          </p>
         </div>
-        {user && (
+        {token && (
           <div className="opcion-lista">
             <div className="opcion" onClick={toggleFavorite}>
               {!favorito ? (
-                <FontAwesomeIcon icon={faHeart} style={{ color: "#000000" }} title="add Favorite List" />
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  style={{ color: "#000000" }}
+                  title="add Favorite List"
+                />
               ) : (
-                <FontAwesomeIcon icon={faHeart} style={{ color: '#ef6161' }} title= "delete from Favorite List"/>
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  style={{ color: "#ef6161" }}
+                  title="delete from Favorite List"
+                />
               )}
             </div>
             <div className="opcion" onClick={toggleVistas}>
               {!vistas ? (
-                <FontAwesomeIcon icon={faEye} style={{ color: "#000000" }} title="add View List" />
+                <FontAwesomeIcon
+                  icon={faEye}
+                  style={{ color: "#000000" }}
+                  title="add View List"
+                />
               ) : (
-                <FontAwesomeIcon icon={faEyeSlash} style={{ color: "#000000" }} title= "delete from View List"/>
+                <FontAwesomeIcon
+                  icon={faEyeSlash}
+                  style={{ color: "#000000" }}
+                  title="delete from View List"
+                />
               )}
             </div>
             <div className="opcion" onClick={toggleVerDespues}>
               {!verDespues ? (
-                <FontAwesomeIcon icon={faPlusCircle} style={{ color: "#000000" }} title= "add To Watch List"/>
+                <FontAwesomeIcon
+                  icon={faPlusCircle}
+                  style={{ color: "#000000" }}
+                  title="add To Watch List"
+                />
               ) : (
-                <FontAwesomeIcon icon={faList} style={{ color: "#000000" }} title="delete from To Watch List"/>
+                <FontAwesomeIcon
+                  icon={faList}
+                  style={{ color: "#000000" }}
+                  title="delete from To Watch List"
+                />
               )}
             </div>
           </div>
@@ -93,7 +140,6 @@ const Card = ({ data,media }) => {
       </div>
     </div>
   );
-
 };
 
 export default Card;

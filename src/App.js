@@ -8,7 +8,8 @@ import MovieDetails from "./components/MovieDetails";
 import Profile from "./components/Profile";
 import Footer from "./components/Footer";
 import { ChangePassoword } from "./components/changePassword";
-
+import { InsertEmail } from "./components/InsertEmail";
+import { InsertCode } from "./components/InsertCode";
 const App = () => {
 
   return (
@@ -26,6 +27,8 @@ const App = () => {
         <Route path="/changePassword" element={<ChangePassoword />} />
         <Route path="/movie/:movieId" element={<MovieDetails media={"movie"} />} />
         <Route path="/tv/:movieId" element={<MovieDetails media={"tv"}/>} />
+        <Route path="/insertEmail" element={<InsertEmail/>}/>
+        <Route path="/insertCode" element={<InsertCode/>}/>
       </Routes>
       <Footer />
     </>

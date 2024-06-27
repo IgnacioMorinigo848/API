@@ -1,9 +1,15 @@
-.contenedor-profile{
+.contenedor-profile,
+.loader-contenedor-profile{
     width: 100%;
     box-shadow: inset 5px 5px 20px rgba(94, 93, 93, 0.5); 
     background-color: #222020 !important;
 }
-
+.loader-contenedor-profile{
+    display: flex;
+    justify-content: center;
+    height: 600px;
+    align-items: center;
+}
 .user{
     display: flex;
     justify-content: center;

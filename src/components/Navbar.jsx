@@ -13,10 +13,9 @@ const Navbar = () => {
   const [estadoVistaUser, setEstadovistaUser] = useState(false);
   const [estadoOpcionCuenta, setEstadoOpcionCuenta] = useState(false);
 
-  const userNoparse = localStorage.getItem("user");
-  const user = JSON.parse(userNoparse);
+  const user = localStorage.getItem("token");
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation()
 
   const handdleLogout = (e) => {
     e.preventDefault();
@@ -100,7 +99,7 @@ const Navbar = () => {
                   <p className="dropdown-toggle" onClick={handdleOpcionMiPerfil}>Account</p>
                   <div className={estadoOpcionCuenta ? "opciones opcion-mi-cuenta" : "opcion-mi-cuenta-oculto"}>
                     <p><Link className="p-link-opcion" to={"/profile"}>Profile</Link></p>
-                    <p><Link className="p-link-opcion" to={"/changePassword"}>Change Password</Link></p>
+                    <p><Link className="p-link-opcion" to={"/insertEmail"}>Change Password</Link></p>
                   </div>
                 </div>
                 <div className="contenedor-listas">

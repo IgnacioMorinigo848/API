@@ -1,5 +1,6 @@
 import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export function ChangePassoword() {
     const [password, setPassword] = useState("");
@@ -8,12 +9,11 @@ export function ChangePassoword() {
     const [emailValidate, setValidate] = useState(false);
     const [errors, setErrors] = useState("");
     const navigate = useNavigate();
-    const userNoparse = localStorage.getItem("user");
-    const user = JSON.parse(userNoparse);
+    const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if(user){
-      setEmail(user.email)
+    if(token){
+      setEmail(token)
       setValidate(true)
   }
   },[emailValidate])
@@ -50,7 +50,16 @@ export function ChangePassoword() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(validateForm()){
-        navigate("/home")
+          axios
+          .post("http://localhost:3000/user/", {
+            password,
+            confirmPassword// Cambio aquí (el back solo recibe una password, habria q validar q coincidan y mandar solo una)
+          }).set("x-access-token", token)
+    
+          .then(() => navigate("/home"))
+          .catch(() => alert("Error en el cambio de contraseña"));
+          navigate("/changePassword")
+      
         }
     }
     
